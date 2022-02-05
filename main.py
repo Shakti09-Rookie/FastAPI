@@ -1,12 +1,17 @@
+import string
+from typing import Optional
 from fastapi import FastAPI
 
 # instance name is "app"
 app = FastAPI()
 
 
-@app.get("/")
-def index():
-    return {"data": {"name": "Shakti"}}
+@app.get("/blog")
+def index(limit: int = 9, published: bool = True, sort: Optional[str] = None):
+    if published:
+        return {"data": f" { limit } blogs are published from the database"}
+    else:
+        return {"data": f"{limit} blogs are there in the data base"}
 
 
 @app.get("/blog/unpublished")
@@ -23,5 +28,5 @@ def blog(id: int):
 
 
 @app.get("/blog/{id}/comments")
-def comments(id: int):
+def comments(id: int, limit=10):
     return {"data": {"1", "2"}}
