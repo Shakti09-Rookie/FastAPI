@@ -1,6 +1,8 @@
 import string
 from typing import Optional
 from fastapi import FastAPI
+from pydantic import BaseModel
+import uvicorn
 
 # instance name is "app"
 app = FastAPI()
@@ -30,3 +32,20 @@ def blog(id: int):
 @app.get("/blog/{id}/comments")
 def comments(id: int, limit=10):
     return {"data": {"1", "2"}}
+
+
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+
+# post method below, can only be checked through /docs
+@app.post("/blog")
+def create_blog(blog: Blog):
+    return {"data": f"Blog is created wtih title as {blog.title}"}
+
+
+# to use a different port,for using it run python main.py , not uvicorn
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="127.0.0.1", port=9000)
