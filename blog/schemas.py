@@ -1,17 +1,24 @@
+from turtle import title
+from typing import List
 from pydantic import BaseModel
 
 # base model import is required for,
 # or it will show error
 # pydantic model or schema
-class Blog(BaseModel):
+class BlogBase(BaseModel):
     title: str
     body: str
 
 
+class Blog(BlogBase):
+    class Config:
+        orm_mode = True
+
+
 class User(BaseModel):
-    Name: str
+    name: str
     email: str
-    Age: int
+    age: int
     usr_type: str
     password: str
 
@@ -22,7 +29,8 @@ class User(BaseModel):
 class ShowUser(BaseModel):
     name: str
     email: str
-    # Age: int
+    age: int
+    blogs: List[Blog] = []
 
     class Config:
         orm_mode = True
@@ -35,3 +43,8 @@ class ShowBlog(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class Login(BaseModel):
+    username: str
+    password: str
